@@ -247,10 +247,22 @@
     }
 
     @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+      .section-title-underline {
+        padding-bottom: 0.25rem;
+      }
+      .section-title-underline::after {
+        width: 40px;
+        height: 2px;
+      }
+      /* Mobile specific styling for showcase overlay */
       .showcase-overlay {
         width: 100%;
         background: rgba(var(--plain-bg-color), 0.7); /* Simpler overlay for mobile */
-        justify-content: center;
+        justify-content: flex-start; /* Align content to the left */
+        padding-left: 1.5rem; /* Add some left padding */
       }
       .showcase-image {
         max-width: 180px; /* Smaller image on mobile */
@@ -272,14 +284,15 @@
       <ul id="navbar-links" class="flex gap-4 md:gap-10 text-base font-medium">
         <li><a href="#hero" class="hover:text-indigo-400 transition-colors duration-200">Home</a></li>
         <li><a href="#about" class="hover:text-indigo-400 transition-colors duration-200">About</a></li>
-        <li><a href="#skills" class="hover:text-indigo-400 transition-colors duration-200">Skills</a></li>
+        <!-- Skills link removed as per user request -->
         <li><a href="#experience" class="hover:text-indigo-400 transition-colors duration-200">Experience</a></li>
         <li><a href="#showcase" class="hover:text-indigo-400 transition-colors duration-200">Showcase</a></li>
         <li><a href="#contact" class="hover:text-indigo-400 transition-colors duration-200">Contact</a></li>
       </ul>
     </nav>
   </header>
-
+<br>
+<br>
   <!-- NEW: Creative Showcase Section - Moved to Top -->
   <section id="showcase" class="py-20 px-6 relative z-10" style="padding-top: 100px;">
     <div class="showcase-wrapper"> <!-- New wrapper for full width behavior -->
@@ -328,7 +341,7 @@
     <div class="container mx-auto max-w-6xl text-center">
       <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">About Me</h2>
       <div class="glass-card p-8 md:p-12 mt-12">
-       
+        
         <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
           Seasoned <span class="font-bold text-indigo-300">software engineer</span> with over a decade of expertise in enterprise application development, specializing in robust ERP systems. Proficient in <strong class="text-white">C#.NET, SQL Server, and ASP.NET Core MVC</strong>, with a proven track record of translating complex business requirements into scalable, high-performance solutions. Adept at crafting clean, maintainable code and designing efficient architectures that drive operational excellence. Committed to delivering innovative software that enhances organizational productivity and long-term success.
         </p>
@@ -416,7 +429,7 @@
 
         <a href="mailto:spk@example.com"
            class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-xl
-                 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent mb-8">
+                transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent mb-8">
           <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
