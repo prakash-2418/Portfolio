@@ -14,262 +14,235 @@
   <!-- GSAP (GreenSock Animation Platform) for smooth animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --plain-bg-color: 30 30 46;
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-strong-bg: rgba(255, 255, 255, 0.12);
+    --glass-blur: blur(8px);
+    --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    --text-light: #e0e7ff;
+    --text-muted: #a7b7d0;
+    --accent-primary: #6366f1;
+    --accent-hover: #818cf8;
+  }
 
-  <style>
-    /* ---------- Custom CSS Variables for Theme & Glassmorphism ---------- */
-    :root {
-      /* NEW: Single plain background color for overall consistency */
-      --plain-bg-color: 30 30 46;    /* Deep Blue-Purple */
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-light);
+  }
 
-      /* Glassmorphism properties */
-      --glass-border: rgba(255, 255, 255, 0.15); /* Slightly more visible border */
-      --glass-bg: rgba(255, 255, 255, 0.1); /* Increased opacity for less transparency */
-      --glass-strong-bg: rgba(255, 255, 255, 0.12); /* Adjusted for consistency */
-      --glass-blur: blur(8px);
-      --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  body {
+    background: rgb(var(--plain-bg-color));
+    overflow-x: hidden;
+  }
 
-      /* Text Colors */
-      --text-light: #e0e7ff; /* Light indigo for general text */
-      --text-muted: #a7b7d0; /* Muted text for subtle details */
-      --accent-primary: #6366f1; /* Indigo 500 */
-      --accent-hover: #818cf8; /* Indigo 400 */
+  .hero-gradient {
+    background: rgb(var(--plain-bg-color));
+  }
+
+  .hero-overlay {
+    background: rgba(var(--plain-bg-color), 0.7);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.25rem;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .glass-card:not(#contact-form-card):hover {
+    transform: translateY(-8px) rotateX(2deg);
+    box-shadow: 0 18px 70px rgba(0, 0, 0, 0.45);
+    border-color: rgba(129, 140, 248, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .glass-nav {
+    background: linear-gradient(180deg, rgba(var(--plain-bg-color), 0.25), rgba(var(--plain-bg-color), 0.2));
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  }
+
+  .section-title-underline {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+
+  .section-title-underline::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    border-radius: 2px;
+  }
+
+  #mouse-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at center, rgba(129, 140, 248, 0.2), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: blur(80px);
+    z-index: -1;
+    will-change: transform;
+  }
+
+  #contactForm input[type="text"]:hover,
+  #contactForm input[type="email"]:hover,
+  #contactForm textarea:hover {
+    border-color: rgba(66, 133, 244, 0.6);
+    box-shadow: 0 0 15px rgba(66, 133, 244, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  #contactForm input[type="text"],
+  #contactForm input[type="email"],
+  #contactForm textarea {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+
+  .showcase-wrapper {
+    max-width: 1584px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .showcase-container {
+    width: 100%;
+    aspect-ratio: 1584 / 396;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .showcase-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('cover.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease;
+    z-index: 0;
+  }
+
+  .showcase-container:hover {
+    transform: translateY(-10px) scale(1.005);
+    box-shadow: 0 25px 90px rgba(0, 0, 0, 0.6);
+  }
+
+  .showcase-container:hover::before {
+    filter: grayscale(0%);
+  }
+
+  .showcase-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.8), rgba(var(--plain-bg-color), 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    z-index: 1;
+    transition: background 0.3s ease;
+  }
+
+  .showcase-container:hover .showcase-overlay {
+    background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.6), rgba(var(--plain-bg-color), 0.1));
+  }
+
+  .showcase-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    filter: brightness(0.9);
+  }
+
+  .showcase-image:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    filter: brightness(1.2);
+  }
+
+  /* Mobile-specific fixes */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.8rem;
     }
-
-    /* Global styles for responsiveness and font */
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Inter', sans-serif; /* Using Inter from Google Fonts */
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      color: var(--text-light); /* Default text color */
-    }
-
-    /* Body background: NOW A SINGLE, PLAIN COLOR */
-    body {
-      background: rgb(var(--plain-bg-color)); /* Applied plain background color */
-      overflow-x: hidden; /* Prevent horizontal scroll from animations */
-    }
-
-    /* Hero section overlay and background - adjusted for plain color */
-    .hero-gradient {
-      background: rgb(var(--plain-bg-color)); /* Matches plain body background */
-    }
-
-    .hero-overlay {
-      background: rgba(var(--plain-bg-color), 0.7); /* Blurred version of the plain color */
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-    }
-
-    /* Reusable glass card style */
-    .glass-card {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 1.25rem;
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      box-shadow: var(--glass-shadow);
-      /* Enhanced transition to include border-color and background */
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-    }
-
-    /* ENHANCED: Card Depth on Hover (slight 3D rotation) and New Hover Effects - APPLIES TO ALL EXCEPT CONTACT FORM CARD */
-    /* We will manage #contact-form-card hover separately with JS */
-    .glass-card:not(#contact-form-card):hover {
-      transform: translateY(-8px) rotateX(2deg); /* Slightly more lift and a subtle tilt */
-      box-shadow: 0 18px 70px rgba(0, 0, 0, 0.45); /* Enhanced shadow on hover */
-      border-color: rgba(129, 140, 248, 0.4); /* Accent color border (indigo-400 with alpha) */
-      background: rgba(255, 255, 255, 0.15); /* Slightly more opaque background */
-    }
-
-    /* Navbar glass style - NOW MORE OPAQUE */
-    .glass-nav {
-      background: linear-gradient(180deg, rgba(var(--plain-bg-color), 0.25), rgba(var(--plain-bg-color), 0.2)); /* Increased alpha values */
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Slightly more visible border */
-      box-shadow: 0 4px 18px rgba(0,0,0,0.3); /* Slightly more prominent shadow */
-    }
-
-    /* Custom underline for headings */
     .section-title-underline {
-      position: relative;
-      display: inline-block;
-      padding-bottom: 0.5rem;
-      margin-bottom: 2.5rem;
-      /* Ensures content inside span can transform */
-      overflow: hidden;
+      padding-bottom: 0.25rem;
     }
-
     .section-title-underline::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-      border-radius: 2px;
+      width: 40px;
+      height: 2px;
     }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.8rem;
-      }
-      .section-title-underline {
-        padding-bottom: 0.25rem;
-      }
-      .section-title-underline::after {
-        width: 40px;
-        height: 2px;
-      }
+    nav .container {
+      flex-wrap: wrap;
     }
-
-    /* NEW: Interactive Mouse Glow */
-    #mouse-glow {
-      position: absolute;
-      width: 300px; /* Base size of the glow */
-      height: 300px;
-      background: radial-gradient(circle at center, rgba(129, 140, 248, 0.2), transparent 70%); /* indigo-400 with alpha */
-      border-radius: 50%;
-      pointer-events: none; /* Allows clicks to pass through */
-      transform: translate(-50%, -50%); /* Center the glow on the cursor */
-      opacity: 0; /* Starts invisible */
-      transition: opacity 0.3s ease; /* Smooth fade in/out */
-      filter: blur(80px); /* Heavy blur for soft effect */
-      z-index: -1; /* Ensure it stays behind content */
-      will-change: transform; /* Hint to browser for performance */
-    }
-
-    /* Contact Form Input/Textarea Hover Effect (BLUE SHADE) */
-    #contactForm input[type="text"]:hover,
-    #contactForm input[type="email"]:hover,
-    #contactForm textarea:hover {
-      border-color: rgba(66, 133, 244, 0.6); /* A Google Blue shade with transparency */
-      box-shadow: 0 0 15px rgba(66, 133, 244, 0.2); /* Subtle blue glow effect */
-      background: rgba(255, 255, 255, 0.1); /* Slightly more opaque background */
-    }
-
-    /* Smooth transition for contact form fields */
-    #contactForm input[type="text"],
-    #contactForm input[type="email"],
-    #contactForm textarea {
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    }
-
-    /* NEW: Creative Showcase styles */
-    .showcase-wrapper {
-      /* This new wrapper will handle the max-width and centering for the section */
-      max-width: 1584px; /* Set max-width for the content inside */
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .showcase-container {
-      /* Removed background-image from here */
-      /* background-size, background-position, background-repeat are now handled by ::before */
-      width: 100%;
-      aspect-ratio: 1584 / 396; /* Maintain aspect ratio */
-      border-radius: 0; /* No rounded corners */
-      overflow: hidden; /* Still useful for child positioning */
-      box-shadow: var(--glass-shadow);
-      position: relative;
-      /* Removed filter from here, as it's now on the ::before pseudo-element */
-      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Only transform and shadow transitions here */
-    }
-
-    /* Pseudo-element for the background image, allowing filter independence */
-    .showcase-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('cover.jpeg'); /* Moved background image here */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: grayscale(100%); /* Default to greyscale */
-      transition: filter 0.5s ease; /* Apply filter transition here */
-      z-index: 0; /* Ensure it's behind the overlay content */
-    }
-
-    .showcase-container:hover {
-      transform: translateY(-10px) scale(1.005); /* Slight lift and very slight scale */
-      box-shadow: 0 25px 90px rgba(0, 0, 0, 0.6); /* Deeper shadow */
-      /* Removed filter from here as it's handled by ::before */
-    }
-
-    /* Hover effect for the pseudo-element background */
-    .showcase-container:hover::before {
-      filter: grayscale(0%); /* Remove greyscale on hover for normal color */
-    }
-
     .showcase-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 40%; /* Adjust width of the overlay */
-      height: 100%;
-      background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.8), rgba(var(--plain-bg-color), 0.2)); /* Dark gradient overlay */
-      display: flex;
-      align-items: center;
-      justify-content: center; /* Image centered within the overlay */
-      padding: 2rem;
-      box-sizing: border-box; /* Include padding in width/height */
-      z-index: 1; /* Ensure overlay is above the pseudo-element background */
-      transition: background 0.3s ease; /* Add transition for background changes */
-    }
+  width: auto; /* Let it shrink to fit content */
+  left: 0;
+  background: rgba(var(--plain-bg-color), 0.85);
+  justify-content: flex-start;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 
-    .showcase-container:hover .showcase-overlay {
-        background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.6), rgba(var(--plain-bg-color), 0.1)); /* Slightly less opaque overlay on hover */
-    }
+.showcase-image {
+  max-width: 200px; /* Adjust to your preferred size */
+}
 
-    .showcase-image {
-      width: 100%; /* Fill available space within overlay, max width below */
-      max-width: 250px; /* Max size for the image (portrait) */
+    #hero {
       height: auto;
-      object-fit: contain;
-      border-radius: 0.75rem; /* Keep slight rounded corners for the image itself */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
-      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-      filter: brightness(0.9); /* Slightly darker normally */
+      padding-top: 2rem;
+      padding-bottom: 3rem;
     }
-
-    .showcase-image:hover {
-      transform: scale(1.05) translateY(-5px); /* Lift and enlarge slightly */
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); /* More intense shadow on hover */
-      filter: brightness(1.2); /* Brighten on hover */
+    #hero .glass-card {
+      padding: 1.5rem;
     }
+  }
+</style>
 
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2.8rem;
-      }
-      .section-title-underline {
-        padding-bottom: 0.25rem;
-      }
-      .section-title-underline::after {
-        width: 40px;
-        height: 2px;
-      }
-      /* Mobile specific styling for showcase overlay */
-      .showcase-overlay {
-        width: 100%;
-        background: rgba(var(--plain-bg-color), 0.7); /* Simpler overlay for mobile */
-        justify-content: flex-start; /* Align content to the left */
-        padding-left: 1.5rem; /* Add some left padding */
-      }
-      .showcase-image {
-        max-width: 180px; /* Smaller image on mobile */
-      }
-    }
-
-  </style>
 </head>
 
 <body class="antialiased">
