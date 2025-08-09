@@ -1,516 +1,757 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prakash Krishna S - Software Engineering Portfolio</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Slate-50 */
-            color: #1e293b; /* Slate-800 */
-        }
-        .section-title {
-            position: relative;
-            display: inline-block;
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50%; /* Adjust width as needed */
-            height: 4px;
-            background-color: #6366f1; /* Indigo-500 */
-            border-radius: 9999px;
-        }
-    </style>
-<!-- Image container -->
-<script>
-function openModal(imageSrc) {
-    document.getElementById("modalImage").src = imageSrc;
-    document.getElementById("imageModal").classList.remove("hidden");
-}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SPK | Software Engineer</title>
 
-function closeModal() {
-    document.getElementById("imageModal").classList.add("hidden");
-}
-</script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Google Fonts: Inter for primary text -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- GSAP (GreenSock Animation Platform) for smooth animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ---------- Custom CSS Variables for Theme & Glassmorphism ---------- */
+    :root {
+      /* NEW: Single plain background color for overall consistency */
+      --plain-bg-color: 30 30 46;    /* Deep Blue-Purple */
+
+      /* Glassmorphism properties */
+      --glass-border: rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+      --glass-bg: rgba(255, 255, 255, 0.1); /* Increased opacity for less transparency */
+      --glass-strong-bg: rgba(255, 255, 255, 0.12); /* Adjusted for consistency */
+      --glass-blur: blur(8px);
+      --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+      /* Text Colors */
+      --text-light: #e0e7ff; /* Light indigo for general text */
+      --text-muted: #a7b7d0; /* Muted text for subtle details */
+      --accent-primary: #6366f1; /* Indigo 500 */
+      --accent-hover: #818cf8; /* Indigo 400 */
+    }
+
+    /* Global styles for responsiveness and font */
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif; /* Using Inter from Google Fonts */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: var(--text-light); /* Default text color */
+    }
+
+    /* Body background: NOW A SINGLE, PLAIN COLOR */
+    body {
+      background: rgb(var(--plain-bg-color)); /* Applied plain background color */
+      overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    }
+
+    /* Hero section overlay and background - adjusted for plain color */
+    .hero-gradient {
+      background: rgb(var(--plain-bg-color)); /* Matches plain body background */
+    }
+
+    .hero-overlay {
+      background: rgba(var(--plain-bg-color), 0.7); /* Blurred version of the plain color */
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+    }
+
+    /* Reusable glass card style */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 1.25rem;
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow);
+      /* Enhanced transition to include border-color and background */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+
+    /* ENHANCED: Card Depth on Hover (slight 3D rotation) and New Hover Effects - APPLIES TO ALL EXCEPT CONTACT FORM CARD */
+    /* We will manage #contact-form-card hover separately with JS */
+    .glass-card:not(#contact-form-card):hover {
+      transform: translateY(-8px) rotateX(2deg); /* Slightly more lift and a subtle tilt */
+      box-shadow: 0 18px 70px rgba(0, 0, 0, 0.45); /* Enhanced shadow on hover */
+      border-color: rgba(129, 140, 248, 0.4); /* Accent color border (indigo-400 with alpha) */
+      background: rgba(255, 255, 255, 0.15); /* Slightly more opaque background */
+    }
+
+    /* Navbar glass style - NOW MORE OPAQUE */
+    .glass-nav {
+      background: linear-gradient(180deg, rgba(var(--plain-bg-color), 0.25), rgba(var(--plain-bg-color), 0.2)); /* Increased alpha values */
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Slightly more visible border */
+      box-shadow: 0 4px 18px rgba(0,0,0,0.3); /* Slightly more prominent shadow */
+    }
+
+    /* Custom underline for headings */
+    .section-title-underline {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+      margin-bottom: 2.5rem;
+      /* Ensures content inside span can transform */
+      overflow: hidden;
+    }
+
+    .section-title-underline::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+      border-radius: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+      .section-title-underline {
+        padding-bottom: 0.25rem;
+      }
+      .section-title-underline::after {
+        width: 40px;
+        height: 2px;
+      }
+    }
+
+    /* NEW: Interactive Mouse Glow */
+    #mouse-glow {
+      position: absolute;
+      width: 300px; /* Base size of the glow */
+      height: 300px;
+      background: radial-gradient(circle at center, rgba(129, 140, 248, 0.2), transparent 70%); /* indigo-400 with alpha */
+      border-radius: 50%;
+      pointer-events: none; /* Allows clicks to pass through */
+      transform: translate(-50%, -50%); /* Center the glow on the cursor */
+      opacity: 0; /* Starts invisible */
+      transition: opacity 0.3s ease; /* Smooth fade in/out */
+      filter: blur(80px); /* Heavy blur for soft effect */
+      z-index: -1; /* Ensure it stays behind content */
+      will-change: transform; /* Hint to browser for performance */
+    }
+
+    /* Contact Form Input/Textarea Hover Effect (BLUE SHADE) */
+    #contactForm input[type="text"]:hover,
+    #contactForm input[type="email"]:hover,
+    #contactForm textarea:hover {
+      border-color: rgba(66, 133, 244, 0.6); /* A Google Blue shade with transparency */
+      box-shadow: 0 0 15px rgba(66, 133, 244, 0.2); /* Subtle blue glow effect */
+      background: rgba(255, 255, 255, 0.1); /* Slightly more opaque background */
+    }
+
+    /* Smooth transition for contact form fields */
+    #contactForm input[type="text"],
+    #contactForm input[type="email"],
+    #contactForm textarea {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    /* NEW: Creative Showcase styles */
+    .showcase-wrapper {
+      /* This new wrapper will handle the max-width and centering for the section */
+      max-width: 1584px; /* Set max-width for the content inside */
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .showcase-container {
+      /* Removed background-image from here */
+      /* background-size, background-position, background-repeat are now handled by ::before */
+      width: 100%;
+      aspect-ratio: 1584 / 396; /* Maintain aspect ratio */
+      border-radius: 0; /* No rounded corners */
+      overflow: hidden; /* Still useful for child positioning */
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      /* Removed filter from here, as it's now on the ::before pseudo-element */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Only transform and shadow transitions here */
+    }
+
+    /* Pseudo-element for the background image, allowing filter independence */
+    .showcase-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('cover.jpeg'); /* Moved background image here */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: grayscale(100%); /* Default to greyscale */
+      transition: filter 0.5s ease; /* Apply filter transition here */
+      z-index: 0; /* Ensure it's behind the overlay content */
+    }
+
+    .showcase-container:hover {
+      transform: translateY(-10px) scale(1.005); /* Slight lift and very slight scale */
+      box-shadow: 0 25px 90px rgba(0, 0, 0, 0.6); /* Deeper shadow */
+      /* Removed filter from here as it's handled by ::before */
+    }
+
+    /* Hover effect for the pseudo-element background */
+    .showcase-container:hover::before {
+      filter: grayscale(0%); /* Remove greyscale on hover for normal color */
+    }
+
+    .showcase-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40%; /* Adjust width of the overlay */
+      height: 100%;
+      background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.8), rgba(var(--plain-bg-color), 0.2)); /* Dark gradient overlay */
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Image centered within the overlay */
+      padding: 2rem;
+      box-sizing: border-box; /* Include padding in width/height */
+      z-index: 1; /* Ensure overlay is above the pseudo-element background */
+      transition: background 0.3s ease; /* Add transition for background changes */
+    }
+
+    .showcase-container:hover .showcase-overlay {
+        background: linear-gradient(to right, rgba(var(--plain-bg-color), 0.6), rgba(var(--plain-bg-color), 0.1)); /* Slightly less opaque overlay on hover */
+    }
+
+    .showcase-image {
+      width: 100%; /* Fill available space within overlay, max width below */
+      max-width: 250px; /* Max size for the image (portrait) */
+      height: auto;
+      object-fit: contain;
+      border-radius: 0.75rem; /* Keep slight rounded corners for the image itself */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
+      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+      filter: brightness(0.9); /* Slightly darker normally */
+    }
+
+    .showcase-image:hover {
+      transform: scale(1.05) translateY(-5px); /* Lift and enlarge slightly */
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); /* More intense shadow on hover */
+      filter: brightness(1.2); /* Brighten on hover */
+    }
+
+    @media (max-width: 768px) {
+      .showcase-overlay {
+        width: 100%;
+        background: rgba(var(--plain-bg-color), 0.7); /* Simpler overlay for mobile */
+        justify-content: center;
+      }
+      .showcase-image {
+        max-width: 180px; /* Smaller image on mobile */
+      }
+    }
+
+  </style>
 </head>
+
 <body class="antialiased">
-    <div class="min-h-screen flex flex-col">
-        <!-- Header/Navigation -->
-        <header class="bg-white shadow-sm py-4 px-6 md:px-10 sticky top-0 z-50">
-            <nav class="container mx-auto flex justify-between items-center">
-                <a href="#hero" class="text-2xl font-bold text-indigo-600 rounded-md p-2 hover:bg-indigo-50 transition-colors">Prakash Krishna S</a>
-                <div class="hidden md:flex space-x-6">
-                    <a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">About</a>
-                    <a href="#experience" class="text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Experience</a>
-                    <a href="#projects" class="text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Projects</a>
-                    <a href="#skills" class="text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Skills</a>
-                    <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Contact</a>
-                </div>
-                <!-- Mobile Menu Button (Hamburger) -->
-                <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-indigo-600 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </nav>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
-                <a href="#about" class="block text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">About</a>
-                <a href="#experience" class="block text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Experience</a>
-                <a href="#projects" class="block text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Projects</a>
-                <a href="#skills" class="block text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Skills</a>
-                <a href="#contact" class="block text-gray-700 hover:text-indigo-600 font-medium rounded-md p-2 hover:bg-indigo-50 transition-colors">Contact</a>
-            </div>
-        </header>
 
-        <main class="flex-grow">
-            <!-- Hero Section -->
-            <section id="hero" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-20 md:py-32 rounded-b-lg shadow-lg">
-                <div class="container mx-auto px-6 md:px-10 text-center">
-                    <div class="mb-8">
-                        <!-- Placeholder for a professional photo -->
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="relative flex justify-center">
-                            <div class="absolute -top-24 z-10">
-                                <img src="Img/My.jpeg" alt="Prakash Krishna S"
-                                class="rounded-full border-4 border-white shadow-xl w-40 h-40 object-cover transform transition-all duration-500 hover:scale-105 hover:shadow-2xl" height="150" width="150" />
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Prakash Krishna S</h1>
-                    <p class="text-xl md:text-2xl font-light mb-8">Software Engineer | Building Robust & Efficient Applications</p>
-                    <a href="#projects" class="inline-block bg-white text-indigo-700 hover:bg-indigo-100 px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 transform hover:scale-105">View My Work</a>
-                </div>
-            </section>
+  <!-- NEW: Interactive Mouse Glow Element -->
+  <div id="mouse-glow"></div>
 
-            <!-- About Section -->
-            <section id="about" class="py-16 md:py-24 bg-white">
-                <div class="container mx-auto px-6 md:px-10 max-w-4xl">
-                    <h2 class="text-3xl md:text-4xl font-bold section-title text-gray-900 mb-8">About Me</h2>
-                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                        Dedicated and detail-oriented Computer Science graduate with hands-on experience in designing and developing software applications. My passion lies in solving real-world problems through efficient, user-friendly, and secure software solutions.
-                    </p>
-                    <p class="text-lg text-gray-700 leading-relaxed">
-                        I am excited to contribute to dynamic development teams and grow as a software professional by continuously learning and applying new technologies. My expertise includes C#.NET, WinForms, SQL Server, and applying Object-Oriented Programming (OOP) principles and MVC architecture for maintainable code.
-                    </p>
-                    <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                        <a href="https://www.linkedin.com/in/8778240098" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-blue-700 transition-colors flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.026-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm3.554 13.019H1.783V9h3.554v11.452zM22.227 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.456c.98 0 1.773-.773 1.773-1.729V1.729C24 .774 23.207 0 22.227 0z"></path></svg>
-                            <span>LinkedIn</span>
-                        </a>
-                        <!-- Placeholder for GitHub. Replace with your actual GitHub URL. -->
-                        <a href="https://github.com/prakash-2418" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white px-6 py-3 rounded-full shadow-md hover:bg-gray-900 transition-colors flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.332-1.756-1.332-1.756-1.09-.744.082-.729.082-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.833 2.809 1.304 3.492.997.108-.775.418-1.304.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.382 1.236-3.22-.124-.3-.536-1.52.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.293-1.552 3.3-.418 3.3-.418.653 1.656.241 2.876.118 3.176.77.838 1.233 1.91 1.233 3.22 0 4.61-2.804 5.626-5.475 5.922.429.369.816 1.104.816 2.223 0 1.606-.015 2.896-.015 3.286 0 .319.219.69.829.576C20.562 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"></path></svg>
-                            <span>GitHub</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
+  <!-- Sticky Navbar -->
+  <header class="fixed top-0 left-0 w-full z-50 glass-nav">
+    <nav class="container mx-auto flex justify-between items-center py-4 px-6">
+      <div class="text-3xl font-extrabold tracking-wider text-white">PRAKASH KRISHNA S</div>
+      <ul id="navbar-links" class="flex gap-4 md:gap-10 text-base font-medium">
+        <li><a href="#hero" class="hover:text-indigo-400 transition-colors duration-200">Home</a></li>
+        <li><a href="#about" class="hover:text-indigo-400 transition-colors duration-200">About</a></li>
+        <li><a href="#skills" class="hover:text-indigo-400 transition-colors duration-200">Skills</a></li>
+        <li><a href="#experience" class="hover:text-indigo-400 transition-colors duration-200">Experience</a></li>
+        <li><a href="#showcase" class="hover:text-indigo-400 transition-colors duration-200">Showcase</a></li>
+        <li><a href="#contact" class="hover:text-indigo-400 transition-colors duration-200">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-            <!-- Experience Section -->
-            <section id="experience" class="py-16 md:py-24 bg-gray-50">
-                <div class="container mx-auto px-6 md:px-10 max-w-4xl">
-                    <h2 class="text-3xl md:text-4xl font-bold section-title text-gray-900 mb-8">Experience</h2>
-
-                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Software Engineer</h3>
-                        <p class="text-xl font-medium text-gray-800 mb-1">GAINUP INDUSTRIES INDIA PVT. LTD</p>
-                        <p class="text-gray-600 mb-4">Dec 2024 - Present Date | Dindigul</p>
-                        <ul class="list-disc pl-5 space-y-3 text-lg text-gray-700">
-                            <li>
-                                Designed and developed robust desktop applications using <strong class="text-gray-900">C#.NET and WinForms</strong>, focusing on creating intuitive user interfaces and efficient workflows for enterprise solutions.
-                            </li>
-                            <li>
-                                Implemented complex backend logic with <strong class="text-gray-900">ADO.NET</strong>, ensuring seamless connectivity to <strong class="text-gray-900">SQL Server databases</strong> through optimized queries and stored procedures, enhancing data retrieval and manipulation performance.
-                            </li>
-                            <li>
-                                Integrated third-party libraries and APIs for critical functionalities such as <strong class="text-gray-900">barcode generation, automated SMS/email notifications, and comprehensive reporting (Crystal Reports)</strong>, significantly expanding application capabilities.
-                            </li>
-                            <li>
-                                Applied core <strong class="text-gray-900">Object-Oriented Programming (OOP) principles</strong> and adhered to <strong class="text-gray-900">MVC architecture</strong>, resulting in highly maintainable, scalable, and modular codebases.
-                            </li>
-                            <li>
-                                Utilized <strong class="text-gray-900">Git for version control</strong> and managed projects using <strong class="text-gray-900">Agile principles</strong>, fostering collaborative development and efficient project delivery within team environments.
-                            </li>
-                        </ul>
-                        <!-- Placeholder for project visuals/details -->
-                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-gray-100 p-4 rounded-md shadow-inner">
-                                <h4 class="font-semibold text-gray-800 mb-2">Project Overview / Key Features</h4>
-
-                                <!-- Image container -->
-                                <div class="relative group w-full h-48 rounded-md overflow-hidden mb-3 shadow-md">
-                                    <img src="Img/Project.jpeg" alt="Desktop App Screenshot"
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-
-                                    <!-- "Full View" button -->
-                                    <button onclick="openModal('Img/Project.jpeg')"
-                                            class="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded hover:bg-opacity-80 transition">
-                                        Full View
-                                    </button>
-                                </div>
-
-                                <!-- Modal (hidden by default) -->
-                                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
-                                    <div class="relative">
-                                        <button onclick="closeModal()"
-                                                class="absolute top-2 right-2 bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
-                                            Close
-                                        </button>
-                                        <img id="modalImage" src="" alt="Full View" class="max-h-screen max-w-screen rounded shadow-lg">
-                                    </div>
-                                </div>
-
-                                <p class="text-sm text-gray-600">
-                                    This section would feature screenshots or mockups of the desktop applications you developed. Describe a specific module or feature, like an inventory management screen or a sales order form.
-                                </p>
-                            </div>
-                            <div class="bg-gray-100 p-4 rounded-md shadow-inner">
-                                <h4 class="font-semibold text-gray-800 mb-2">Technical Implementation / Architecture</h4>
-                                <!-- <img src="Img/tech.jpeg" alt="Architecture Diagram" class="w-full h-48 object-cover rounded-md mb-3"> -->
-
-
-                                <!-- Image container -->
-                                <div class="relative group w-full h-48 rounded-md overflow-hidden mb-3 shadow-md">
-                                    <img src="Img/tech.jpeg" alt="Desktop App Screenshot"
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-
-                                    <!-- "Full View" button -->
-                                    <button onclick="openModal('Img/tech.jpeg')"
-                                            class="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded hover:bg-opacity-80 transition">
-                                        Full View
-                                    </button>
-                                </div>
-
-                                <!-- Modal (hidden by default) -->
-                                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
-                                    <div class="relative">
-                                        <button onclick="closeModal()"
-                                                class="absolute top-2 right-2 bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
-                                            Close
-                                        </button>
-                                        <img id="modalImage" src="" alt="Full View" class="max-h-screen max-w-screen rounded shadow-lg">
-                                    </div>
-                                </div>
-                                
-
-
-                                <p class="text-sm text-gray-600">
-                                    Here, you could include a simple architecture diagram showing the interaction between WinForms UI, ADO.NET, and SQL Server. You might also include a small, well-commented code snippet.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Projects Section -->
-            <section id="projects" class="py-16 md:py-24 bg-white">
-                <div class="container mx-auto px-6 md:px-10 max-w-4xl">
-                    <h2 class="text-3xl md:text-4xl font-bold section-title text-gray-900 mb-8">Projects</h2>
-
-                    <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                       <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Enterprise Resource Planning (ERP) – Garment Industry Modules</h3>
-<p class="text-xl font-medium text-gray-800 mb-1">Professional Project</p>
-<p class="text-gray-600 mb-4">Aug 2024 – Present | GAINUP INDUSTRIES INDIA PVT. LTD</p>
-
-<ul class="list-disc pl-5 space-y-3 text-lg text-gray-700">
-    <li>
-        Developed and maintained core ERP modules including <strong class="text-gray-900">Garments Issue, Sales Entry, Inventory Tracking</strong> using <strong class="text-gray-900">C#.NET (WinForms) and SQL Server</strong>.
-    </li>
-    <li>
-        Implemented a dynamic rights management system for 30+ staff, enabling <strong class="text-gray-900">granular user access control and audit logging</strong>.
-    </li>
-    <li>
-        Migrated key business logic from legacy VB6.0 to .NET Framework, enhancing <strong class="text-gray-900">performance, scalability, and maintainability</strong>.
-    </li>
-    <li>
-        Designed reusable UI components such as <strong class="text-gray-900">search popups, financial validations, and grid-level approval logic</strong> to speed up form development.
-    </li>
-    <li>
-        Integrated <strong class="text-gray-900">Crystal Reports</strong> for detailed MIS and operational reporting, including automated TDS validation.
-    </li>
-    <li>
-        Played a key role in modernizing the ERP UI using <strong class="text-gray-900">ASP.NET Core MVC + Tailwind CSS</strong>, hosting it as a responsive internal web application.
-    </li>
-    <li>
-        Collaborated closely with QA and business teams to deliver <strong class="text-gray-900">production-ready modules with zero post-deployment defects</strong>.
-    </li>
-</ul>
-
-                        <!-- Placeholder for project visuals/details -->
-                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-white p-4 rounded-md shadow-inner">
-                                <h4 class="font-semibold text-gray-800 mb-2">Process & Methodology</h4>
-                                <!-- <img src="Img/Flowchart.jpeg" alt="Process Flowchart" class="w-full h-48 object-cover rounded-md mb-3"> -->
-
-
-                                <!-- Image container -->
-                                <div class="relative group w-full h-48 rounded-md overflow-hidden mb-3 shadow-md">
-                                    <img src="Img/Flowchart.jpeg" alt="Desktop App Screenshot"
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-
-                                    <!-- "Full View" button -->
-                                    <button onclick="openModal('Img/Flowchart.jpeg')"
-                                            class="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded hover:bg-opacity-80 transition">
-                                        Full View
-                                    </button>
-                                </div>
-
-                                <!-- Modal (hidden by default) -->
-                                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
-                                    <div class="relative">
-                                        <button onclick="closeModal()"
-                                                class="absolute top-2 right-2 bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
-                                            Close
-                                        </button>
-                                        <img id="modalImage" src="" alt="Full View" class="max-h-screen max-w-screen rounded shadow-lg">
-                                    </div>
-                                </div>
-                                
-
-                                <p class="text-sm text-gray-600">
-                                    Here, you can include a flowchart or diagram illustrating your new session management process and how it differs from traditional methods.
-                                </p>
-                            </div>
-                            <div class="bg-white p-4 rounded-md shadow-inner">
-                                <h4 class="font-semibold text-gray-800 mb-2">Results & Impact Visuals</h4>
-                                <!-- <img src="Img/Erp.png" alt="Performance Graph" class="w-full h-48 object-cover rounded-md mb-3"> -->
-
-
-                                <!-- Image container -->
-                                <div class="relative group w-full h-48 rounded-md overflow-hidden mb-3 shadow-md">
-                                    <img src="Img/Erp.png" alt="Desktop App Screenshot"
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-
-                                    <!-- "Full View" button -->
-                                    <button onclick="openModal('Img/Erp.png')"
-                                            class="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded hover:bg-opacity-80 transition">
-                                        Full View
-                                    </button>
-                                </div>
-
-                                <!-- Modal (hidden by default) -->
-                                <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
-                                    <div class="relative">
-                                        <button onclick="closeModal()"
-                                                class="absolute top-2 right-2 bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
-                                            Close
-                                        </button>
-                                        <img id="modalImage" src="" alt="Full View" class="max-h-screen max-w-screen rounded shadow-lg">
-                                    </div>
-                                </div>
-                                
-
-                                <p class="text-sm text-gray-600">
-                                    If you have any data on memory usage reduction or performance improvements, visualize it here with a simple graph. You could also include a small, key code snippet.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Skills Section -->
-            <section id="skills" class="py-16 md:py-24 bg-White-50">
-    <div class="container mx-auto px-6 md:px-10 max-w-4xl">
-        <h2 class="text-3xl md:text-4xl font-bold section-title text-gray-900 mb-8">Skills</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-lg">
-            <!-- Card 1 -->
-            <div class="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                <h3 class="font-semibold text-xl text-indigo-700 mb-3">Programming Languages</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>C# (.NET)</li>
-                    <li>Python</li>
-                    <li>C/C++</li>
-                    <li>PHP</li>
-                    <li>JavaScript</li>
-                    <li>Java</li>
-                </ul>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                <h3 class="font-semibold text-xl text-indigo-700 mb-3">Databases & Frameworks</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>SQL Server</li>
-                    <li>ADO.NET</li>
-                    <li>WinForms</li>
-                    <li>ASP.NET</li>
-                    <li>MVC Architecture</li>
-                </ul>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white p-6 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                <h3 class="font-semibold text-xl text-indigo-700 mb-3">Tools & Methodologies</h3>
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Git/GitHub</li>
-                    <li>Visual Studio</li>
-                    <li>Crystal Reports</li>
-                    <li>VS Code</li>
-                    <li>Windows OS</li>
-                    <li>Agile Principles</li>
-                    <li>Object-Oriented Programming (OOP)</li>
-                </ul>
-            </div>
+  <!-- NEW: Creative Showcase Section - Moved to Top -->
+  <section id="showcase" class="py-20 px-6 relative z-10" style="padding-top: 100px;">
+    <div class="showcase-wrapper"> <!-- New wrapper for full width behavior -->
+      <!-- <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white text-center">Creative Showcase</h2> -->
+      <div class="relative w-full mx-auto mt-12 overflow-hidden showcase-container">
+        <!-- The background image is now handled by the ::before pseudo-element -->
+        <div class="showcase-overlay">
+          <img src="Profile.jpeg"
+                alt="Project Feature Thumbnail"
+                class="showcase-image" />
         </div>
-    </div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" class="py-16 md:py-24 bg-white">
-  <div class="container mx-auto px-6 md:px-10 max-w-2xl text-center group">
-
-    <!-- Title with animated underline -->
-    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2 inline-block relative">
-      Get In Touch
-      <span class="absolute left-0 -bottom-1 h-1 bg-indigo-500 transition-all duration-300 w-16 group-hover:w-32"></span>
-    </h2>
-
-    <!-- Description -->
-    <p class="text-lg text-gray-700 mb-8 mt-4">
-      I'm always open to discussing new projects, opportunities, or collaborations. Feel free to reach out!
-    </p>
-
-    <!-- Email Me button that opens Gmail -->
-    <div class="flex flex-col md:flex-row items-center gap-4 mb-8">
-    <button
-  id="open-contact-form"
-  class="bg-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-md hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105 group-hover:underline flex items-center justify-center space-x-2"
->
-  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M22 4H2c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.5L12 13 2 6.5V6h20zM2 18V9.5l10 6.5 10-6.5V18H2z"></path>
-  </svg>
-  <span>Email Me</span>
-</button>
-
-
-      <span class="text-indigo-600 font-medium">(peterprakash2222@gmail.com)</span>
-    </div>
-
-    <!-- Contact Form -->
-    <form id="contact-form" class="w-full max-w-md mx-auto bg-white p-6 rounded-lg shadow">
-      <div class="mb-4">
-        <input type="text" name="from_name" placeholder="Your Name"
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+        <!-- Removed the right-side content area (text and button) -->
       </div>
-      <div class="mb-4">
-        <input type="email" name="reply_to" placeholder="Your Email"
-               class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-      </div>
-      <div class="mb-4">
-        <textarea rows="3" name="message" placeholder="Your Message"
-                  class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"></textarea>
-      </div>
-      <button type="submit"
-              class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded shadow">
-        Send Message
-      </button>
-    </form>
-  </div>
-</section>
-<!-- 
-<form id="contact-form" class="space-y-4">
-  <input type="text" name="user_name" placeholder="Your Name" required class="w-full px-4 py-2 border rounded" />
-  <input type="email" name="user_email" placeholder="Your Email" required class="w-full px-4 py-2 border rounded" />
-  <textarea name="message" placeholder="Your Message" required class="w-full px-4 py-2 border rounded"></textarea>
-  <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
-    Send Message
-  </button>
-</form> -->
-
-<script>
-  function focusName() {
-    document.getElementById("name").focus();
-  }
-</script>
-
-
-
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-8 mt-auto rounded-t-lg">
-            <div class="container mx-auto px-6 md:px-10 text-center">
-                <p>&copy; <span id="current-year"></span> Prakash Krishna S. All rights reserved.</p>
-                <div class="flex justify-center space-x-4 mt-4">
-                    <a href="https://www.linkedin.com/in/8778240098" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
-                    <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">GitHub</a>
-                    <a href="mailto:peterprakash2222@gmail.com" class="text-gray-400 hover:text-white transition-colors">Email</a>
-                </div>
-            </div>
-        </footer>
     </div>
+  </section>
 
-    <!-- EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <!-- Hero Section -->
+  <section id="hero" class="relative h-screen flex items-center justify-center px-6 overflow-hidden">
+    <!-- Background is now plain -->
+    <div class="absolute inset-0 hero-gradient z-0"></div>
+    <!-- Blurred Overlay adjusted for plain color -->
+    <div class="absolute inset-0 hero-overlay z-10"></div>
 
+    <!-- Hero Content: This is the single container for the Hero section -->
+    <div class="relative z-20 text-center max-w-screen-xl mx-auto p-8 md:p-12 glass-card">
+      <h1 class="hero-title text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-white mb-4">
+        Hello, I'm <span class="text-indigo-400">Prakash</span>.
+      </h1>
+      <p class="mt-4 text-xl md:text-2xl text-gray-200 font-light">
+        A passionate <span class="font-medium text-white">Software Developer</span>, crafting robust <span class="font-medium text-white">ERP Solutions</span> and scalable architectures.
+      </p>
+      <a href="#about"
+          class="mt-10 inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-xl
+                transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent">
+        Learn More
+        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
 
+  <!-- About Section -->
+  <section id="about" class="py-24 px-6 relative z-10">
+    <!-- About Content: This is the single container for the About section -->
+    <div class="container mx-auto max-w-6xl text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">About Me</h2>
+      <div class="glass-card p-8 md:p-12 mt-12">
+       
+        <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
+          Seasoned <span class="font-bold text-indigo-300">software engineer</span> with over a decade of expertise in enterprise application development, specializing in robust ERP systems. Proficient in <strong class="text-white">C#.NET, SQL Server, and ASP.NET Core MVC</strong>, with a proven track record of translating complex business requirements into scalable, high-performance solutions. Adept at crafting clean, maintainable code and designing efficient architectures that drive operational excellence. Committed to delivering innovative software that enhances organizational productivity and long-term success.
+        </p>
 
-<script>
-  (function () {
-    emailjs.init("kGz9eD1pC0KVK7ucO"); // Replace with your EmailJS public key
-  })();
+      </div>
+    </div>
+  </section>
 
-  document.getElementById('contact-form').addEventListener('submit', function (event) {
-    event.preventDefault();
+  <!-- Skills Section -->
+  <section id="skills" class="py-20 px-6 relative z-10">
+    <!-- Skills Content: This is the single container for the Skills section -->
+    <div class="max-w-full mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">My Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        <!-- Each skill category is a glass-card within this single main container -->
+        <div class="glass-card p-8 flex flex-col items-center text-center">
+          <h3 class="text-2xl font-bold text-indigo-300 mb-4">Programming Languages</h3>
+          <ul class="space-y-3 text-lg text-gray-200 w-full text-left px-4">
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🌐</span> HTML5, CSS3, JavaScript (ES6+)</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">⚙️</span> C#, VB6, C++</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🐍</span> Python</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">☕</span> Java</li>
+          </ul>
+        </div>
+        <!-- Skill Category 2 -->
+        <div class="glass-card p-8 flex flex-col items-center text-center">
+          <h3 class="text-2xl font-bold text-indigo-300 mb-4">Databases & Frameworks</h3>
+          <ul class="space-y-3 text-lg text-gray-200 w-full text-left px-4">
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🛢️</span> SQL Server, MySQL</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🌐</span> ASP.NET Core MVC, .NET Framework</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">📦</span> Entity Framework</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🎨</span> Tailwind CSS</li>
+          </ul>
+        </div>
+        <!-- Skill Category 3 -->
+        <div class="glass-card p-8 flex flex-col items-center text-center">
+          <h3 class="text-2xl font-bold text-indigo-300 mb-4">Tools & Methodologies</h3>
+          <ul class="space-y-3 text-lg text-gray-200 w-full text-left px-4">
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">🛠️</span> Visual Studio, VS Code</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">📂</span> Git, GitHub</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">📋</span> Agile, Scrum</li>
+            <li class="flex items-center"><span class="mr-3 text-indigo-400">⚡</span> GSAP, Figma</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    emailjs.sendForm('service_ja6i4d9', 'template_cdpalm4', this)
-      .then(function () {
-        alert('Message sent successfully! ✅');
-      }, function (error) {
-        alert('Failed to send message ❌: ' + JSON.stringify(error));
+  <!-- Removed Projects Section -->
+
+  <!-- Experience Section -->
+  <section id="experience" class="py-20 px-6 relative z-10">
+    <!-- Experience Content: This is the single container for the Experience section -->
+    <div class="container mx-auto max-w-7xl text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">Work Experience</h2>
+      <div class="space-y-10 mt-12 max-w-5xl mx-auto">
+        <!-- Each experience item is a glass-card within this single main container -->
+        <div class="glass-card p-8 text-left">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
+            <h3 class="text-2xl font-bold text-indigo-300">Software Developer</h3>
+            <p class="text-base text-gray-400 font-medium mt-1 md:mt-0">Dec 2024 – Present</p>
+          </div>
+          <p class="text-lg text-gray-300 mb-4">GAINUP INDUSTRIES INDIA PVT.LTD </p>
+          <ul class="list-disc pl-5 space-y-2 text-base text-gray-200">
+            <li>DesignedanddevelopeddesktopapplicationsusingC.NETand WinForms.</li>
+            <li>Implemented backend logic with ADO.NET,connected to SQLServer databases using optimized queries and stored procedures</li>
+            <li>Integrated third-party libraries and APIs for barcode generation, SMS/email notifications, and reporting (Crystal Reports).</li>
+            <li>Applied Object-Oriented Programming (OOP) principles and followed MVC architecture for maintainable code.</li>
+            <li>Worked with Git for version control and managed projects using Agile principles (when working in teams).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 px-6 relative z-10">
+    <!-- Contact Content: This is the single container for the Contact section -->
+    <div class="container mx-auto max-w-5xl text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">Let’s Connect</h2>
+      <div id="contact-form-card" class="glass-card p-8 md:p-12 mt-12">
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          Got a project in mind or just want to chat? Reach out to me! I'm always open to new opportunities and collaborations.
+        </p>
+
+        <a href="mailto:spk@example.com"
+           class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-xl
+                 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent mb-8">
+          <svg class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+          </svg>
+          spk@example.com
+        </a>
+
+        <form id="contactForm" class="mt-8 space-y-6 text-left" novalidate>
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+            <input id="name" name="from_name" type="text" required
+              class="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white transition-all duration-200"
+              placeholder="Your full name" />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+            <input id="email" name="from_email" type="email" required
+              class="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white transition-all duration-200"
+              placeholder="you@domain.com" />
+          </div>
+
+          <!-- The Subject textbox has been removed -->
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Your Message</label>
+            <textarea id="message" name="message" rows="6" required
+              class="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white transition-all duration-200"
+              placeholder="Write your message here..."></textarea>
+          </div>
+
+          <div class="flex justify-center">
+            <button id="sendBtn" type="submit"
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-xl
+                    transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-transparent">
+              <svg id="spinner" class="w-5 h-5 animate-spin hidden" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity="0.25" stroke-width="3"></circle>
+                <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+              </svg>
+              <span id="btnText">Send Message</span>
+            </button>
+          </div>
+          <div id="status" role="status" aria-live="polite" class="text-center mt-6 text-sm"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 text-center text-gray-400 text-sm bg-gray-900/10">
+    © 2025 SPK. All rights reserved. | Crafted with <span class="text-red-400">❤</span> and Tailwind CSS + GSAP.
+  </footer>
+
+  <!-- EmailJS integration (ensure YOUR_SERVICE_ID, YOUR_TEMPLATE_ID, YOUR_PUBLIC_KEY are replaced) -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    // !! IMPORTANT: Replace these with your actual EmailJS credentials !!
+    const EMAILJS_SERVICE_ID = "service_ja6i4d9";
+    const EMAILJS_TEMPLATE_ID = "template_cdpalm4";
+    const EMAILJS_PUBLIC_KEY = "kGz9eD1pC0KVK7ucO";
+
+    (function() {
+      if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+        console.warn("EmailJS not initialized: Please replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, and YOUR_TEMPLATE_ID with your actual credentials to enable form submission.");
+        // Disable form submission if keys are not set for development purposes
+        document.getElementById('sendBtn').disabled = true;
+        document.getElementById('status').innerHTML = '<span class="text-rose-300">Form submission disabled: EmailJS keys not configured.</span>';
+      } else {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+      }
+    })();
+  </script>
+
+  <!-- Contact form submission logic -->
+  <script>
+    const form = document.getElementById('contactForm');
+    const sendBtn = document.getElementById('sendBtn');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btnText');
+    const status = document.getElementById('status');
+
+    function setLoading(isLoading) {
+      spinner.classList.toggle('hidden', !isLoading);
+      btnText.textContent = isLoading ? 'Sending...' : 'Send Message';
+      sendBtn.disabled = isLoading || (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY"); // Keep disabled if keys are missing
+      sendBtn.classList.toggle('opacity-70', isLoading);
+    }
+
+    function showStatus(html, timeout = 6000) {
+      status.innerHTML = html;
+      setTimeout(() => status.innerHTML = '', timeout);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {
+        showStatus('<span class="text-rose-300">EmailJS is not configured. Please check console for details.</span>');
+        return;
+      }
+
+      const name = form.from_name.value.trim();
+      const email = form.from_email.value.trim();
+      const message = form.message.value.trim();
+
+      // Updated validation after removing subject
+      if (!name || !email || !message) {
+        showStatus('<span class="text-rose-300">Please fill out all fields before sending.</span>');
+        return;
+      }
+
+      setLoading(true);
+      // Removed 'subject' from the data sent to EmailJS
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { from_name: name, from_email: email, message })
+        .then(() => {
+          setLoading(false);
+          form.reset();
+          showStatus('<span class="text-green-300">Message sent successfully! I will get back to you soon.</span>');
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("EmailJS error:", error);
+          showStatus('<span class="text-rose-300">Failed to send message. Please try again later.</span>');
+        });
+    });
+  </script>
+
+  <!-- GSAP animations for scrolling and entrance effects and new mouseover animations -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initial hero content animation
+    gsap.from("#hero .glass-card", { scale: 0.9, opacity: 0, duration: 1.2, ease: "power3.out" });
+    gsap.from("#hero h1", { y: 50, opacity: 0, duration: 1, delay: 0.2, ease: "power3.out" });
+    gsap.from("#hero p", { y: 30, opacity: 0, duration: 0.9, delay: 0.4, ease: "power3.out" });
+    gsap.from("#hero a", { y: 20, opacity: 0, duration: 0.8, delay: 0.6, ease: "power3.out" });
+
+    // Navbar links staggered fade-in
+    gsap.from("#navbar-links li", {
+      opacity: 0,
+      y: -20,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 1 // Delay after hero animation
+    });
+
+    // Staggered reveal for all sections on scroll
+    gsap.utils.toArray("section").forEach(section => {
+      // Adjusted the selector to ensure the showcase section's content is also animated correctly
+      if(section.id === "showcase") {
+        gsap.from(section.querySelectorAll(".section-title-underline, .showcase-container, .showcase-image, .showcase-overlay, a"), {
+          opacity: 0,
+          y: 40,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          }
+        });
+      } else if (section.id !== "hero") { // Exclude hero as it has its own intro animation
+        gsap.from(section.querySelectorAll(".section-title-underline, .glass-card:not(#contact-form-card), a, ul li"), { // Exclude contact-form-card from general animation
+          opacity: 0,
+          y: 40,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%", // When top of section hits 80% of viewport height
+            toggleActions: "play none none reverse",
+          }
+        });
+      }
+    });
+
+    // Footer animation
+    gsap.from("footer", {
+      opacity: 0,
+      y: 30,
+      duration: 0.7,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: "footer",
+        start: "top 95%", // When footer enters view
+        toggleActions: "play none none reverse",
+      }
+    });
+
+    // --- MOUSEOVER ANIMATIONS ---
+
+    // 1. Interactive Background Glow (follows mouse cursor)
+    const mouseGlow = document.getElementById('mouse-glow');
+    document.addEventListener('mousemove', (e) => {
+      // Update position of the glow element
+      mouseGlow.style.left = `${e.clientX}px`;
+      mouseGlow.style.top = `${e.clientY}px`;
+    });
+
+    // Make it visible when mouse moves over the body (and hide if mouse leaves window)
+    document.body.addEventListener('mouseenter', () => {
+      gsap.to(mouseGlow, { opacity: 0.1, duration: 0.5 }); // Subtle initial glow
+    });
+    document.body.addEventListener('mouseleave', () => {
+      gsap.to(mouseGlow, { opacity: 0, duration: 0.5 });
+    });
+
+    // Enhance glow on hover of glass cards (excluding contact form card and showcase container)
+    gsap.utils.toArray(".glass-card:not(#contact-form-card):not(.showcase-container)").forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        gsap.to(mouseGlow, { opacity: 0.25, scale: 1.2, duration: 0.3, ease: "power2.out" }); // Brighter, larger glow
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(mouseGlow, { opacity: 0.1, scale: 1, duration: 0.3, ease: "power2.out" }); // Return to subtle glow
+      });
+    });
+
+    // 2. Dynamic Text Shimmer/Color Change on Section Titles (in a separate function)
+    function animateTitleOnHover(titleElement) {
+      let originalText = titleElement.innerHTML;
+      // Wrap each character in a span for individual animation
+      let splitText = originalText.split('').map(char => `<span class="char-span inline-block relative">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+      titleElement.innerHTML = splitText;
+
+      let chars = titleElement.querySelectorAll(".char-span");
+
+      // Create a timeline that will be played/reversed on hover
+      let hoverTimeline = gsap.timeline({ paused: true });
+
+      hoverTimeline.to(chars, {
+        y: -3, // Small vertical jump
+        rotationZ: (i) => (i % 2 === 0 ? 1 : -1), // Subtle tilt
+        color: '#818cf8', // Change to accent color (Tailwind indigo-400 equivalent)
+        stagger: {
+          each: 0.02, // Stagger effect for each character
+          from: "random" // Random start point for characters
+        },
+        duration: 0.3,
+        ease: "power1.out"
       });
 
-    this.reset(); // Clear form
-  });
-</script>
+      titleElement.addEventListener("mouseenter", () => hoverTimeline.play(0)); // Play from beginning
+      titleElement.addEventListener("mouseleave", () => {
+        hoverTimeline.reverse(); // Reverse the timeline to original state
+      });
+    }
 
+    // Apply the animation function to each section title
+    gsap.utils.toArray(".section-title-underline").forEach(title => {
+      animateTitleOnHover(title);
+    });
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close mobile menu if open
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
+    // 3. Contact Form Card Hover Logic (overriding general .glass-card hover)
+    const contactFormCard = document.getElementById('contact-form-card');
+    const contactFormInputs = contactFormCard.querySelectorAll('#contactForm input[type="text"], #contactForm input[type="email"], #contactForm textarea');
+    const sendButton = document.getElementById('sendBtn'); // Get the send button
+
+    // Create a GSAP timeline for the contact form card's hover effect
+    const contactCardHoverTl = gsap.timeline({ paused: true });
+    contactCardHoverTl.to(contactFormCard, {
+      y: -8, // Lift
+      rotationX: 2, // Tilt
+      boxShadow: '0 18px 70px rgba(0, 0, 0, 0.45)', // Enhanced shadow
+      borderColor: 'rgba(129, 140, 248, 0.4)', // Accent border
+      background: 'rgba(255, 255, 255, 0.15)', // More opaque background
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+
+    // Listeners for the main contact card
+    contactFormCard.addEventListener('mouseenter', () => {
+      contactCardHoverTl.play();
+    });
+    contactFormCard.addEventListener('mouseleave', (event) => {
+      // Check if the mouse is still over an input/textarea inside the card
+      // This is primarily for when the mouse leaves an input *but stays within the card*
+      const isOverChildInput = Array.from(contactFormInputs).some(input => input.contains(event.relatedTarget));
+      if (!contactFormCard.contains(event.relatedTarget) && !isOverChildInput) {
+          contactCardHoverTl.reverse();
+      }
+    });
+
+    // Listeners for inputs/textarea within the contact card
+    contactFormInputs.forEach(input => {
+      input.addEventListener('mouseenter', () => {
+        contactCardHoverTl.reverse(0); // Immediately reverse the card's hover animation
+      });
+      input.addEventListener('mouseleave', (event) => {
+        // After leaving the input, if the mouse is still over the card, resume the card's hover
+        if (contactFormCard.contains(event.relatedTarget)) {
+          contactCardHoverTl.play();
+        }
+      });
+    });
+
+    // Keyboard Navigation for Contact Form
+    const focusableElements = [
+        document.getElementById('name'),
+        document.getElementById('email'),
+        document.getElementById('message'),
+        document.getElementById('sendBtn')
+    ];
+
+    focusableElements.forEach((element, index) => {
+        element.addEventListener('keydown', (event) => {
+            // Ensure this only applies if the element is within the contact form card
+            if (!contactFormCard.contains(element)) {
+                return;
+            }
+
+            if (event.key === 'ArrowUp') {
+                event.preventDefault(); // Prevent default scroll behavior
+                const prevIndex = index - 1;
+                if (prevIndex >= 0) {
+                    focusableElements[prevIndex].focus();
+                } else {
+                    // Optional: loop to the last element or do nothing
+                    // focusableElements[focusableElements.length - 1].focus();
                 }
-            });
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault(); // Prevent default scroll behavior
+                const nextIndex = index + 1;
+                if (nextIndex < focusableElements.length) {
+                    focusableElements[nextIndex].focus();
+                } else {
+                    // Optional: loop to the first element or do nothing
+                    // focusableElements[0].focus();
+                }
+            }
         });
+    });
 
-        // Toggle mobile menu visibility
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Set current year in footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+  </script>
 </body>
 </html>
-
-
-
