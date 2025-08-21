@@ -241,6 +241,68 @@
       padding: 1.5rem;
     }
   }
+
+
+    /* Styles for the modal popup */
+    .credential-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .credential-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .credential-modal-content {
+      background: var(--plain-bg-color);
+      padding: 2rem;
+      border-radius: 1.25rem;
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .credential-modal-content img {
+      max-width: 100%;
+      max-height: 80vh; /* Adjust based on desired height, 80% of viewport height */
+      object-fit: contain;
+      border-radius: 0.75rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .credential-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .credential-modal-close:hover {
+      color: var(--accent-hover);
+    }
+
 </style>
 
 </head>
@@ -376,7 +438,7 @@
           </div>
           <p class="text-lg text-gray-300 mb-4">GAINUP INDUSTRIES INDIA PVT.LTD </p>
           <ul class="list-disc pl-5 space-y-2 text-base text-gray-200">
-            <li>Designed and developed desktop applications using C.NET and WinForms.</li>
+            <li>DesignedanddevelopeddesktopapplicationsusingC.NETand WinForms.</li>
             <li>Implemented backend logic with ADO.NET,connected to SQLServer databases using optimized queries and stored procedures</li>
             <li>Integrated third-party libraries and APIs for barcode generation, SMS/email notifications, and reporting (Crystal Reports).</li>
             <li>Applied Object-Oriented Programming (OOP) principles and followed MVC architecture for maintainable code.</li>
@@ -386,6 +448,62 @@
       </div>
     </div>
   </section>
+
+   <!-- NEW: Certificates Section -->
+  <section id="certificates" class="py-20 px-6 relative z-10">
+    <div class="container mx-auto max-w-7xl text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold section-title-underline text-white">Certificates</h2>
+      <div class="space-y-10 mt-12 max-w-5xl mx-auto">
+        <!-- Certificate Item 1 -->
+        <div class="glass-card p-8 text-left">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
+            <h3 class="text-2xl font-bold text-indigo-300">SCALAR: JAVA COURSE</h3>
+            <p class="text-base text-gray-400 font-medium mt-1 md:mt-0">Jul 2025 – Aug 2025</p>
+          </div>
+          <p class="text-lg text-gray-300 mb-4">MASTERING THE FUNDAMENTALS</p>
+          <button class="show-credential-btn mt-4 inline-flex items-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg"
+                  data-credential-url = "java_full_stack.png"  >        
+                  Show credential
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+          </button>
+        </div>
+        <!-- Certificate Item 2 -->
+        <div class="glass-card p-8 text-left">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
+            <h3 class="text-2xl font-bold text-indigo-300">SCALAR: DBMS COURSE</h3>
+            <p class="text-base text-gray-400 font-medium mt-1 md:mt-0">Jul 2025 – Aug 2025</p>
+          </div>
+          <p class="text-lg text-gray-300 mb-4">MASTERING THE FUNDAMENTALS AND ADVANCED CONCEPTS</p>
+          <button class="show-credential-btn mt-4 inline-flex items-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg"
+                data-credential-url = "SQL.jpg"  >              
+                Show credential
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+          </button>
+        </div>
+        <!-- Certificate Item 3 -->
+        <div class="glass-card p-8 text-left">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
+            <h3 class="text-2xl font-bold text-indigo-300">TATA-FORAGE: GENAI COURSE</h3>
+            <p class="text-base text-gray-400 font-medium mt-1 md:mt-0">Jul 2025 – Aug 2025</p>
+          </div>
+          <p class="text-lg text-gray-300 mb-4">DATA ANALYTICS</p>
+          <button class="show-credential-btn mt-4 inline-flex items-center bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 shadow-lg"
+              data-credential-url = "TATA.png"  >              
+              Show credential
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credential Modal Structure -->
+  <div id="credentialModal" class="credential-modal-overlay">
+    <div class="credential-modal-content">
+      <button class="credential-modal-close">&times;</button>
+      <img id="modalCredentialImage" src="" alt="Credential Image" />
+    </div>
+  </div>
 
   <!-- Contact Section -->
   <section id="contact" class="py-20 px-6 relative z-10">
@@ -735,7 +853,37 @@
         });
     });
 
+    
+    // Credential Modal Logic
+    const credentialModal = document.getElementById('credentialModal');
+    const modalCredentialImage = document.getElementById('modalCredentialImage');
+    const closeModalBtn = document.querySelector('.credential-modal-close');
+    const showCredentialButtons = document.querySelectorAll('.show-credential-btn');
+
+    showCredentialButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const imageUrl = button.dataset.credentialUrl;
+        modalCredentialImage.src = imageUrl;
+        credentialModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      credentialModal.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scrolling
+      modalCredentialImage.src = ''; // Clear image source
+    });
+
+    // Close modal if clicked outside content
+    credentialModal.addEventListener('click', (e) => {
+      if (e.target === credentialModal) {
+        credentialModal.classList.remove('active');
+        document.body.style.overflow = '';
+        modalCredentialImage.src = '';
+      }
+    });
+
   </script>
 </body>
 </html>
-
